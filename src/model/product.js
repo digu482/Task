@@ -11,6 +11,10 @@ const Productschema = new mongoose.Schema({
     productImage: {
         type: String,
     },
+    createdBy: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    }],
 },{ versionKey: false })
 
 const Product = new mongoose.model('product', Productschema);

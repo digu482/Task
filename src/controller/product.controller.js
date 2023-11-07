@@ -14,9 +14,11 @@ exports.productcreate = async (req, res) => {
     }
 
     const productImage = req.profile;
+    const createdBy = req.currentUser;
     const product = new Product({
       ProductName,
       productImage,
+      createdBy
     });
 
     product.save().then(async (data, error) => {

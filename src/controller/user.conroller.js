@@ -206,7 +206,71 @@ exports.logout = async (req, res) => {
 
 exports.Allfind = async (req, res) => {
     try {
-      let userdata = await User.find();
+      // let userdata = await User.find();
+
+      // let userdata = await User.aggregate(
+      //   [ { $group : { _id : "$Name" } } ]
+      // )
+
+      // let userdata = await User.aggregate([ { $limit: 2 } ])
+
+      // let userdata = await User.aggregate([
+      //   {
+      //     $project: {
+      //       "Name": 1,
+      //       "email": 1,
+      //       "Status": 1
+      //     }
+      //   },
+      //   {
+      //     $limit: 5
+      //   }
+      // ])
+
+      // let userdata = await User.aggregate([ 
+      //   { 
+      //     $sort: { "Name": -1 } 
+      //   },
+      //   {
+      //     $project: {
+      //       "Name": 1,
+      //       "email": 1
+      //     }
+      //   },
+      //   {
+      //     $limit: 5
+      //   }
+      // ])
+
+      // let userdata = await User.aggregate([ 
+      //   { $match : { Status : "Approve" } },
+      //   { $limit: 2 },
+      //   { $project: {
+      //     "Name": 1,
+      //     "email": 1,
+      //     "phone": 1
+      //   }}
+      // ])
+
+      // let userdata = await User.aggregate([
+      //   {
+      //     $match: { Status : "Approve" }
+      //   },
+      //   {
+      //     $count: "totalApprove"
+      //   }
+      // ])
+
+      let userdata = await User.aggregate([
+        {
+          $lookup: {
+            from: 'products', 
+            localField: 'createdBy', 
+            foreignField: 'productName', 
+            as: 'products' 
+          }
+        }
+      ]);
       if (!userdata) {
         return res.status(404).json({
           status: 404,
